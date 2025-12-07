@@ -1,6 +1,10 @@
+// Importar Firebase modular desde CDN
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
 // ===== Configuración Firebase =====
 const firebaseConfig = {
-  apiKey: "TU_NUEVO_API_KEY", // Reemplaza con tu nueva apiKey
+  apiKey: "TU_NUEVO_API_KEY", // Reemplaza con tu nueva API Key
   authDomain: "esp32-a9f92.firebaseapp.com",
   databaseURL: "https://esp32-a9f92-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "esp32-a9f92",
@@ -10,11 +14,14 @@ const firebaseConfig = {
 };
 
 // Inicializar Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-// ===== Función para actualizar datos en tiempo real =====
-db.ref("sensores").on("value", snapshot => {
+// Referencia a la rama "sensores"
+const sensoresRef = ref(db, 'sensores');
+
+// Escuchar cambios en tiempo real
+onValue(sensoresRef, (snapshot) => {
   const data = snapshot.val();
   if (!data) return;
 
@@ -23,6 +30,7 @@ db.ref("sensores").on("value", snapshot => {
   const ph   = parseFloat(data.ph);
   const ec   = parseInt(data.ec);
 
+  // Actualizar HTML y colores según rangos ideales
   document.getElementById("temp").textContent = temp.toFixed(1);
   document.getElementById("temp").className = (temp >= 20 && temp <= 26) ? "normal" : "alert";
 
@@ -35,3 +43,5 @@ db.ref("sensores").on("value", snapshot => {
   document.getElementById("ec").textContent = ec;
   document.getElementById("ec").className = (ec >= 800 && ec <= 1500) ? "normal" : "alert";
 });
+
+
