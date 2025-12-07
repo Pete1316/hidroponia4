@@ -1,0 +1,26 @@
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #eef;
+  padding-top: 40px;
+}
+
+h1 {
+  color: #003366;
+  margin-bottom: 50px;
+}
+
+.sensor {
+  font-size: 28px;
+  margin: 20px;
+}
+
+.normal {
+  color: green;
+  font-weight: bold;
+}
+
+.alert {
+  color: red;
+  font-weight: bold;
+}
